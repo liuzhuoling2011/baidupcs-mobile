@@ -1,5 +1,19 @@
 <template>
-  <Layout>
+  <mt-tabbar v-model="selected" fixed>
+    <mt-tab-item>
+      <router-link to="/">文件</router-link>
+    </mt-tab-item>
+    <mt-tab-item>
+      <router-link to="/download">上传下载</router-link>
+    </mt-tab-item>
+    <mt-tab-item>
+      <a>分享</a>
+    </mt-tab-item>
+    <mt-tab-item>
+      <a>回收站</a>
+    </mt-tab-item>
+  </mt-tabbar>
+  <!--<Layout>
     <Header>
       <Menu mode="horizontal" theme="dark">
         <router-link class="layout-logo" to="/"><img src="../assets/logo.png"/></router-link>
@@ -80,7 +94,7 @@
         </Form>
       </div>
     </Modal>
-  </Layout>
+  </Layout>-->
 </template>
 
 <script>
@@ -91,6 +105,7 @@
   export default {
     data() {
       return {
+        selected: '',
         modalShareFlag: false,
         modalRecycleFlag: false,
         modalSettingFlag: false,
@@ -242,21 +257,6 @@
 </script>
 
 <style lang="less" scoped>
-  a {
-    display: block;
-    color: rgba(255, 255, 255, .7);
-    line-height: 60px;
-    transition: color .2s;
-
-    &:hover {
-      color: white;
-    }
-
-    &.router-link-exact-active {
-      color: #2d8cf0;
-    }
-  }
-
   .layout {
     border: 1px solid #d7dde4;
     background: #f5f7f9;
