@@ -47,7 +47,7 @@
     <div class="mv-tab mv-tab-actions" v-if="hasSelected">
       <div class="t-item" @click="downloadFiles"><span>下载</span></div>
       <div class="t-item" @click="shareFiles"><span>分享</span></div>
-      <div class="t-item"><span>删除</span></div>
+      <div class="t-item" @click="removeFiles"><span>删除</span></div>
       <div class="t-item" :class="{disabled: selected.length > 1}"><span>重命名</span></div>
       <div class="t-item"><span>更多</span></div>
     </div>
@@ -56,7 +56,7 @@
 <script>
   import {mapState, mapMutations} from 'vuex'
   import utils from '../libs/util'
-  import {Toast, Indicator} from 'mint-ui'
+  import {Toast, Indicator, MessageBox} from 'mint-ui'
 
   export default {
     name: 'Home',
@@ -222,11 +222,7 @@
         this.unselectAll()
       },
       async shareFiles() {
-        let paths = ''
-        this.selected.forEach(item => {
-          paths += `${item}|`
-        })
-        paths = paths.slice(0, -1)
+        let paths = this.selected.join('|')
 
         const result = await $axios.get(`share?method=set&paths=${encodeURIComponent(paths)}`).catch(this.error)
         if (result.data.code === 0) {
@@ -239,6 +235,19 @@
         } else {
           this.error(result.data.msg)
         }
+      },
+      removeFiles() {
+        MessageBox.confirm('删除操作将会把文件移至百度云回收站', '确认删除吗?').then(async () => {
+          Indicator.open()
+          const result = await $axios.get(`file_operation?method=remove&paths=${encodeURIComponent(this.selected.join('|'))}`).catch(this.error)
+          Indicator.close()
+          if (result.data.code !== 0) {
+            Toast(result.data.msg)
+          } else {
+            this.unselectAll()
+            this.getPathData(this.currentFolder.path || '/', this.setCurrentFolder)
+          }
+        }).catch(() => {})
       },
     },
     mounted() {
