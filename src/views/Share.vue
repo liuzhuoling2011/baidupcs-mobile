@@ -1,6 +1,7 @@
 <template>
   <div class="route-share">
-    <div class="mv-row" v-for="item of shareData">
+    <div class="no-data" v-if="!items.length">暂无分享的文件</div>
+    <div class="mv-row" v-for="item of items">
       <div class="cell l"></div>
       <div class="cell m">
         <div class="file-name">
@@ -23,7 +24,7 @@
     name: 'Share',
     data() {
       return {
-        shareData: []
+        items: []
       }
     },
     computed: {
@@ -37,14 +38,14 @@
       async getShareList() {
         const result = await $axios.get('share?method=list').catch(this.error)
         if (result.data.code === 0) {
-          this.shareData = []
+          this.items = []
           let shares = result.data.data
           shares.forEach(share => {
             const name = share.typicalPath.split('/').pop()
             let multi = ''
             if (share.fsIds.length > 1) multi = ' 等'
 
-            this.shareData.push({
+            this.items.push({
               id: share.shareId,
               name: name + multi,
               password: share.passwd || '无',
@@ -64,7 +65,7 @@
         Indicator.close()
         if (result.data.code === 0) {
           Toast('取消分享成功')
-          this.shareData = this.shareData.filter(item => item.id !== id)
+          this.items = this.items.filter(item => item.id !== id)
           return true
         }
         Toast(result.data.msg)

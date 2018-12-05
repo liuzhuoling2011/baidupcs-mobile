@@ -1,48 +1,79 @@
 <template>
-  <div style="height: 60vh; overflow: auto; margin-top: 30px">
-    <Row>
-      <Col span="8">文件名</Col>
-      <Col span="2">文件大小</Col>
-      <Col span="8">文件路径</Col>
-      <Col span="2">剩余时间</Col>
-      <Col span="2">还原</Col>
-      <Col span="2">删除</Col>
-    </Row>
-    <Row class="file_list" style="margin-top: 8px; line-height: 30px;" v-for="item of recycleData">
-      <Col :title="item.name" span="8" style="overflow-x: hidden;white-space: nowrap;text-overflow: ellipsis;">
-        {{item.name}}
-      </Col>
-      <Col span="2">{{item.size}}</Col>
-      <Col span="8" :title="item.path" style="overflow-x: hidden;white-space: nowrap;text-overflow: ellipsis;">{{item.path}}</Col>
-      <Col span="2">{{item.leftTime}}</Col>
-      <Col span="2"><Button icon="md-undo" type="info" ghost @click="restoreRecycle(item.fid)"></Button></Col>
-      <Col span="2"><Button icon="md-close" type="error" ghost @click="deleteRecycle(item.fid)"></Button></Col>
-    </Row>
+  <div class="route-recycle">
+    <header class="mv-header">
+      <div class="header-l">
+        <router-link to="/"><v-icon icon="left"></v-icon></router-link>
+      </div>
+      <div class="header-m">回收站</div>
+      <div class="header-r">
+        <a class="link" @click="clear">清空</a>
+      </div>
+    </header>
+    <div class="no-data" v-if="!items.length">暂无删除的文件</div>
+    <template v-else>
+      <header class="mv-header mv-header-select" v-if="hasSelected">
+        <div class="h-item l"><a class="link" @click="cancelSelect">取消</a></div>
+        <div class="h-item m">已选中{{selected.length}}个文件</div>
+        <div class="h-item r">
+          <a class="link" @click="unselectAll" v-if="isSelectAll">全不选</a>
+          <a class="link" @click="selectAll" v-else>全选</a>
+        </div>
+      </header>
+
+
+      <div class="mv-row" v-for="item of items">
+        <div class="cell l"></div>
+        <div class="cell m">
+          <div class="file-name"><span>{{item.name}}</span></div>
+          <div class="file-info">
+            <span class="file-size">{{item.size}}</span>
+            <span class="file-left">{{item.leftTime}}后清除</span>
+          </div>
+        </div>
+        <div class="cell r">
+          <label class="mv-checkbox">
+            <input type="checkbox" name="fileDeleted" v-model="selected" :value="item.fid">
+            <span></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="mv-tab mv-tab-actions" v-if="hasSelected">
+        <div class="t-item" @click="restore"><span>还原</span></div>
+        <div class="t-item" @click="del"><span>删除</span></div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
   import utils from '../libs/util'
-  import {mapState} from 'vuex'
+  import {Toast, Indicator} from 'mint-ui'
 
   export default {
-    name: 'v-recycle',
+    name: 'Recycle',
     data() {
       return {
-        recycleData: []
+        items: [],
+        selected: [],
+        isSelectAll: false
       }
     },
     computed: {
-      ...mapState(['globals'])
+      hasSelected() {
+        return this.selected.length > 0
+      }
     },
     methods: {
       async getRecycleList() {
+        Indicator.open()
         const result = await $axios.get('recycle?method=list').catch(this.error)
+        Indicator.close()
         if (result.data.code === 0) {
-          this.recycleData = []
+          this.items = []
           let recycles = result.data.data
           recycles.forEach(recycle => {
-            this.recycleData.push({
+            this.items.push({
               fid: recycle.fs_id,
               name: recycle.server_filename,
               leftTime: recycle.leftTime + ' 天',
@@ -51,35 +82,50 @@
             })
           })
         } else {
-          this.error(result.data.msg)
+          Toast(result.data.msg)
         }
       },
-      async restoreRecycle(fid) {
+      cancelSelect() {
+        this.selected = []
+      },
+      selectAll() {
+        this.isSelectAll = true
+        this.selected = this.items.map(item => item.path)
+      },
+      unselectAll() {
+        this.isSelectAll = false
+        this.selected = []
+      },
+      async restore() {
+        const fid = this.selected[0]
+        Indicator.open()
           const result = await $axios.get(`recycle?method=restore&fid=${fid}`).catch(this.error)
+        Indicator.close()
           if (result.data.code === 0) {
-              this.$Message.success('还原回收站文件成功')
-              for (let i = 0; i < this.recycleData.length; i++) {
-                  if (this.recycleData[i].fid === fid) {
-                      this.recycleData.splice(i, 1)
-                      break
-                  }
-              }
+            Toast('还原回收站文件成功')
+            this.items = this.items.filter(item => item.fid !== fid)
           } else {
-              this.$Message.error(result.data.msg)
+              Toast(result.data.msg)
           }
       },
-      async deleteRecycle(fid) {
+      async del() {
+        const fid = this.selected[0]
+        Indicator.open()
         const result = await $axios.get(`recycle?method=delete&fid=${fid}`).catch(this.error)
+        Indicator.close()
         if (result.data.code === 0) {
-          this.$Message.success('删除回收站文件成功')
-          for (let i = 0; i < this.recycleData.length; i++) {
-            if (this.recycleData[i].fid === fid) {
-              this.recycleData.splice(i, 1)
-              break
-            }
-          }
+          Toast('删除回收站文件成功')
+          this.items = this.items.filter(item => item.fid !== fid)
         } else {
-          this.$Message.error(result.data.msg)
+          Toast(result.data.msg)
+        }
+      },
+      async clear() {
+        Indicator.open()
+        const body = await $axios.get('recycle?method=clear').catch(this.error)
+        Indicator.close()
+        if (body.data.code === 0) {
+          Toast('清空回收站成功')
         }
       }
     },
@@ -88,9 +134,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .ivu-btn {
-    padding: 0 3px 0 3px;
-  }
-</style>

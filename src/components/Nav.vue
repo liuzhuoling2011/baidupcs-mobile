@@ -10,7 +10,7 @@
       <router-link to="/share">分享</router-link>
     </div>
     <div class="t-item">
-      <a>回收站</a>
+      <router-link to="/recycle">回收站</router-link>
     </div>
   </div>
   <!--<Layout>

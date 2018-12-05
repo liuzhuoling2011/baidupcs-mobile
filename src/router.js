@@ -35,6 +35,11 @@ const router = new Router({
         nav: Nav
       },
       meta: { auth: true }
+    },
+    {
+      path: '/recycle',
+      component: () => import(/* webpackChunkName: "recycle" */ './views/Recycle'),
+      meta: { auth: true }
     }
   ]
 })
