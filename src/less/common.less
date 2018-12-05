@@ -1,40 +1,13 @@
-@import (reference) "Variables";
+@import "Variables";
+@import (reference) "Mixins";
+@import "Normalize";
+@import "Components";
+@import "Pages/Lock";
+@import "Pages/Home";
+@import "Pages/Share";
 
 html, body, #app {
   height: 100%;
-}
-
-body {
-  margin: 0;
-}
-
-svg {
-  color: inherit;
-  vertical-align: middle;
-  /* 通过设置 color 来改变 SVG 的颜色/fill */
-  fill: currentColor;
-  /* path 和 stroke 溢出 viewBox 部分在 IE 下会显示
-     normalize.css 中也包含这行 */
-  overflow: hidden;
-}
-
-.mint-tabbar {
-  .mint-tab-item {
-    padding: 0;
-
-    .mint-tab-item-label {
-      a {
-        display: block;
-        line-height: 50px;
-        text-decoration: none;
-        color: @assist-font-color;
-
-        &.router-link-exact-active {
-          color: @blue-color;
-        }
-      }
-    }
-  }
 }
 
 .mint-checkbox-core:after {
@@ -42,136 +15,8 @@ svg {
   left: 7px;
 }
 
-.route-lock {
-  .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20vh;
 
-    .input {
-      height: 30px;
-      border: 1px solid #e9e9e9;
-      border-radius: 4px;
-      margin-bottom: 24px;
-      padding-left: 4px;
-    }
-
-    .mint-button {
-      border-radius: 50%;
-      height: 60px;
-    }
-  }
-}
 
 .route-download {
   height: 100%;
-}
-
-.route-home {
-  .home-page-1 {
-    padding-top: 40px;
-
-    .mint-header {
-      background-color: @white-color;
-      border-bottom: 1px solid @light-border-color;
-
-      .mint-header-title {
-        display: none;
-      }
-
-      .mint-header-button {
-        &.is-left {
-          flex: 1;
-
-          .home-header-left {
-            padding-left: @3unit;
-          }
-
-          .non-home-header-left {
-            color: @first-level-color;
-          }
-
-          .mint-search {
-            height: auto;
-            padding: 2px 0;
-
-            .mint-searchbar {
-              padding: 0;
-              border-radius: 20px;
-              background-color: #f1f2f4;
-
-              .mint-searchbar-inner {
-                background-color: transparent;
-                padding-top: 0;
-                padding-bottom: 0;
-                padding-left: 16px;
-
-                .mintui {
-                  display: none;
-                }
-
-                .mint-searchbar-core {
-                  background-color: transparent;
-                  font-size: 12px;
-                }
-              }
-
-              .mint-searchbar-cancel {
-                display: none;
-              }
-            }
-          }
-        }
-
-        &.is-right {
-          flex: 0;
-          margin-left: @unit;
-
-          .icon {
-            color: @first-level-color;
-          }
-
-          .icon-more-h {
-            margin-left: @2unit;
-          }
-        }
-      }
-    }
-
-    .list {
-      .mint-cell {
-        display: flex;
-        align-items: center;
-        padding: 0 @unit;
-        border-bottom: 1px solid @light-border-color;
-
-        &:last-child {
-          background-image: none;
-        }
-
-        .mint-cell-wrapper {
-          padding: 0;
-          background-image: none;
-          width: auto;
-          flex: 1;
-
-          .mint-cell-title {
-            .mint-cell-text {
-              font-size: 14px;
-              margin-left: @2unit;
-            }
-          }
-        }
-
-        .mint-cell-right {
-          position: relative;
-          top: inherit;
-          right: inherit;
-          height: inherit;
-          transform: none;
-        }
-      }
-    }
-  }
 }

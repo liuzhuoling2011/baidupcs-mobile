@@ -1,0 +1,97 @@
+@import "../Variables";
+@import (reference) "../Mixins";
+
+.route-home {
+  .home-page-1 {
+    padding-top: 40px;
+
+    .mv-header {
+      .header-left {
+        .home-header-left {
+          padding-left: @3unit;
+        }
+
+        .non-home-header-left {
+          .flex-start;
+        }
+
+        .mint-search {
+          height: auto;
+          padding: 2px 0;
+
+          .mint-searchbar {
+            padding: 0;
+            border-radius: 20px;
+            background-color: #f1f2f4;
+
+            .mint-searchbar-inner {
+              background-color: transparent;
+              padding-top: 0;
+              padding-bottom: 0;
+              padding-left: 16px;
+
+              .mintui {
+                display: none;
+              }
+
+              .mint-searchbar-core {
+                background-color: transparent;
+                font-size: 12px;
+              }
+            }
+
+            .mint-searchbar-cancel {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .header-right {
+        .icon {
+          color: @first-level-color;
+        }
+
+        .icon-more-h {
+          margin-left: @2unit;
+        }
+      }
+    }
+
+    .list {
+      .mv-row {
+        .cell {
+          &.l {
+            margin-right: @2unit;
+          }
+
+          &.m {
+            font-size: @small-font;
+          }
+
+          &.r {
+            .flex-start;
+            height: 46px;
+            padding: 0 @2unit;
+          }
+        }
+      }
+    }
+  }
+
+  .mv-tab-actions {
+    background-color: @blue-color;
+    z-index: 2;
+
+    .t-item {
+      line-height: 50px;
+      font-size: @small-font;
+      text-align: center;
+      color: @white-color;
+
+      &.disabled {
+        color: @disabled-color;
+      }
+    }
+  }
+}

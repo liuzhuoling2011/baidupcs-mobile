@@ -2,7 +2,7 @@
   <div class="route-lock">
     <div class="form">
       <input class="input" type="password" placeholder="输入锁定密码" v-model="lockPwd">
-      <mt-button type="primary" @click="unlock">解锁</mt-button>
+      <button class="mv-btn" type="button" @click="unlock">解锁</button>
     </div>
   </div>
 </template>

@@ -1,0 +1,36 @@
+@import "../Variables";
+@import (reference) "../Mixins";
+
+.route-share {
+  .mv-row {
+    padding: @unit;
+
+    .cell {
+      &.m {
+        font-size: @small-font;
+
+        .file-name {
+          .flex-start;
+
+          .icon {
+            margin-right: 4px;
+          }
+        }
+
+        .file-url {
+          color: @assist-font-color;
+          margin-top: 4px;
+        }
+      }
+
+      &.r {
+        height: 40px;
+        line-height: 40px;
+
+        .icon {
+          color: @error-color;
+        }
+      }
+    }
+  }
+}

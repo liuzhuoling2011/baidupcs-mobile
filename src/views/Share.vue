@@ -1,30 +1,26 @@
 <template>
-  <div style="height: 60vh; overflow: auto; margin-top: 30px">
-    <Row>
-      <Col span="9">文件名</Col>
-      <Col span="2">密码</Col>
-      <Col span="11">链接</Col>
-      <Col span="2">操作</Col>
-    </Row>
-    <Row class="file_list" style="margin-top: 8px; line-height: 30px;" v-for="item of shareData">
-      <Col :title="item.name" span="9" style="overflow-x: hidden;white-space: nowrap;text-overflow: ellipsis;">
-        <Icon type="ios-folder-outline" size="24" v-if="item.isDir && !item.isDel"/>
-        <Icon type="ios-document" size="24" v-if="!item.isDir && !item.isDel"/>
-        <Icon type="md-close" size="24" v-if="item.isDel"/>
-        {{item.name}}
-      </Col>
-      <Col span="2">{{item.password}}</Col>
-      <Col span="11">{{item.link}}</Col>
-      <Col span="2"><Button icon="md-close" type="error" ghost @click="cancelShare(item.id)"></Button></Col>
-    </Row>
+  <div class="route-share">
+    <div class="mv-row" v-for="item of shareData">
+      <div class="cell l"></div>
+      <div class="cell m">
+        <div class="file-name">
+          <v-icon icon="folder-flat" slot="icon" v-if="item.isdir"></v-icon>
+          <v-icon icon="file" slot="icon" v-else></v-icon>
+          <span>{{item.name}}</span>
+        </div>
+        <div class="file-url">{{item.link}}</div>
+      </div>
+      <div class="cell r" @click="cancelShare(item.id)"><v-icon icon="close"></v-icon></div>
+    </div>
   </div>
 </template>
 
 <script>
   import {mapState} from 'vuex'
+  import {Toast, Indicator} from 'mint-ui'
 
   export default {
-    name: 'v-share',
+    name: 'Share',
     data() {
       return {
         shareData: []
@@ -63,18 +59,15 @@
         }
       },
       async cancelShare(id) {
+        Indicator.open()
         const result = await $axios.get(`share?method=cancel&id=${id}`).catch(this.error)
+        Indicator.close()
         if (result.data.code === 0) {
-          this.$Message.success('取消分享成功')
-          for (let i = 0; i < this.shareData.length; i++) {
-            if (this.shareData[i].id === id) {
-              this.shareData.splice(i, 1)
-              break
-            }
-          }
-        } else {
-          this.$Message.error(result.data.msg)
+          Toast('取消分享成功')
+          this.shareData = this.shareData.filter(item => item.id !== id)
+          return true
         }
+        Toast(result.data.msg)
       }
     },
     mounted() {
@@ -82,9 +75,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .ivu-btn {
-    padding: 0 3px 0 3px;
-  }
-</style>

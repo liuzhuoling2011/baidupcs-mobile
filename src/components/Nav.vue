@@ -1,18 +1,18 @@
 <template>
-  <mt-tabbar v-model="selected" fixed>
-    <mt-tab-item>
+  <div class="mv-tab">
+    <div class="t-item">
       <router-link to="/">文件</router-link>
-    </mt-tab-item>
-    <mt-tab-item>
+    </div>
+    <div class="t-item">
       <router-link to="/download">上传下载</router-link>
-    </mt-tab-item>
-    <mt-tab-item>
-      <a>分享</a>
-    </mt-tab-item>
-    <mt-tab-item>
+    </div>
+    <div class="t-item">
+      <router-link to="/share">分享</router-link>
+    </div>
+    <div class="t-item">
       <a>回收站</a>
-    </mt-tab-item>
-  </mt-tabbar>
+    </div>
+  </div>
   <!--<Layout>
     <Header>
       <Menu mode="horizontal" theme="dark">

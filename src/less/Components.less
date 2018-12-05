@@ -1,0 +1,109 @@
+@import "Variables";
+@import (reference) "Mixins";
+
+.link {
+  color: @blue-color;
+  font-size: @small-font;
+}
+
+.mv-tab {
+  .mixin-half-px();
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  background-color: @white-color;
+  z-index: 1;
+  display: flex;
+
+  .t-item {
+    flex: 1;
+
+    a {
+      display: block;
+      line-height: 50px;
+      text-align: center;
+      text-decoration: none;
+      color: @assist-font-color;
+      font-size: 14px;
+
+      &.router-link-exact-active {
+        color: @blue-color;
+      }
+    }
+  }
+}
+
+.mv-btn {
+  border: none;
+  background-color: @blue-color;
+  color: @white-color;
+}
+
+.mv-header {
+  .mixin-half-px(@direction: 'bottom');
+  .flex-between;
+  background-color: @white-color;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 1;
+  height: @5unit;
+  padding: 0 @unit;
+}
+
+.mv-header-select {
+  z-index: 2;
+}
+
+.mv-row {
+  .mixin-half-px(@direction: 'bottom');
+  .flex-between;
+  min-height: 48px;
+  padding: 0 @unit;
+
+  .cell {
+    &.m {
+      flex: 1;
+    }
+  }
+}
+
+.mv-checkbox {
+  position: relative;
+  font-size: 0;
+
+  input {
+    display: none;
+
+    &:checked + span {
+      border-color: @blue-color;
+
+      &:after {
+        transform: scale(0.5);
+      }
+    }
+  }
+
+  span {
+    display: inline-block;
+    background-color: @white-color;
+    border-radius: 50%;
+    border: 1px solid @light-border-color;
+    width: @2unit;
+    height: @2unit;
+
+    &:after {
+      content: '';
+      display: block;
+      width: @2unit;
+      height: @2unit;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      background-color: @blue-color;
+      transform: scale(0);
+      transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+  }
+}

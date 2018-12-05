@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Login from './views/Login'
 import Nav from './components/Nav'
 import Lock from './views/Lock.vue'
+import Share from './views/Share.vue'
 import store from './store'
 
 Vue.use(Router)
@@ -11,9 +12,7 @@ Vue.use(Router)
 const router = new Router({
   // mode: 'history',
   routes: [
-    {
-      path: '/',
-      name: 'home',
+    { path: '/', name: 'Home',
       components: {
         default: Home,
         nav: Nav
@@ -22,6 +21,13 @@ const router = new Router({
     },
     { path: '/login', component: Login },
     { path: '/lock', component: Lock },
+    { path: '/share', name: 'Share',
+      components: {
+        default: Share,
+        nav: Nav
+      },
+      meta: { auth: true }
+    },
     {
       path: '/download',
       components: {
