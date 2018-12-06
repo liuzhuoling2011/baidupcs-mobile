@@ -1,5 +1,5 @@
 <template>
-  <div class="route-home">
+  <section class="route-home">
     <div class="home-page-1">
       <header class="mv-header">
         <div class="header-left">
@@ -51,7 +51,7 @@
       <div class="t-item" :class="{disabled: selected.length > 1}"><span>重命名</span></div>
       <div class="t-item"><span>更多</span></div>
     </div>
-  </div>
+  </section>
 </template>
 <script>
   import {mapState, mapMutations} from 'vuex'

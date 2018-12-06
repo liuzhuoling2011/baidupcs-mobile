@@ -1,0 +1,64 @@
+@import "../Variables";
+@import (reference) "../Mixins";
+
+.route-download {
+  padding-top: 40px;
+
+  .mv-header {
+    .h-item {
+      flex: 1;
+      text-align: center;
+      font-size: @small-font;
+      padding: 8px 0;
+      border-bottom: 1px solid transparent;
+
+      &.focus {
+        color: @blue-color;
+        border-color: @blue-color;
+      }
+    }
+  }
+
+  .row-cancel {
+    text-align: center;
+    padding: @unit 0;
+
+    .mv-btn {
+      width: 200px;
+    }
+  }
+
+  .items-list {
+    padding: @unit;
+
+    .item {
+      .mixin-half-px(@direction: 'bottom');
+      padding-bottom: @2unit;
+
+      .i-info {
+        margin-top: @unit;
+        margin-bottom: @unit;
+
+        .ii-cell {
+          .flex-between;
+          font-size: @small-font;
+          padding: 4px 0;
+
+          span:first-child {
+            color: @assist-font-color;
+          }
+        }
+      }
+    }
+
+    .item-ing {
+      .i-actions {
+        .flex-between;
+
+        .mv-btn {
+          min-width: 100px;
+        }
+      }
+    }
+  }
+}

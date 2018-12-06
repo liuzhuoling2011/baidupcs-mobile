@@ -1,5 +1,5 @@
 <template>
-  <div class="route-recycle">
+  <section class="route-recycle">
     <header class="mv-header">
       <div class="header-l">
         <router-link to="/"><v-icon icon="left"></v-icon></router-link>
@@ -43,7 +43,7 @@
         <div class="t-item" @click="del"><span>删除</span></div>
       </div>
     </template>
-  </div>
+  </section>
 </template>
 
 <script>

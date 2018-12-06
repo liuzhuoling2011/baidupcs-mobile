@@ -8,6 +8,7 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import config from './config'
+import {Toast} from 'mint-ui'
 
 import Icon from './components/Icon.vue'
 
@@ -19,6 +20,10 @@ Vue.component(Icon.name, Icon)
 window.$axios = axios.create({
   baseURL: `${config.base_url}/api/v1/`
 })
+
+Vue.prototype.error = function(msg) {
+  Toast(msg)
+}
 
 store
     .dispatch('init')

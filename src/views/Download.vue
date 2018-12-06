@@ -1,111 +1,114 @@
 <template>
-  <Layout>
-    <Sider hide-trigger :style="{background: '#fff'}">
-      <Menu theme="light" width="auto" :open-names="['1']" :active-name="select_menu_name" @on-select="getMenuName">
-        <Submenu name="1">
-          <template slot="title"><Icon type="ios-cloud-download"></Icon>我的下载</template>
-          <MenuItem name="1-1">正在下载</MenuItem>
-          <MenuItem name="1-2">已经完成</MenuItem>
-        </Submenu>
-        <Submenu name="2">
-          <template slot="title"><Icon type="ios-cloud-upload"></Icon>我的上传</template>
-          <MenuItem name="2-1">正在上传</MenuItem>
-          <MenuItem name="2-2">已经完成</MenuItem>
-        </Submenu>
-        <Submenu name="3">
-          <template slot="title"><Icon type="ios-link"/>离线下载</template>
-          <MenuItem name="3-1">正在下载</MenuItem>
-          <MenuItem name="3-2">已经完成</MenuItem>
-        </Submenu>
-      </Menu>
-    </Sider>
-    <Layout :style="{padding: '24px'}">
-      <div style="margin-bottom: 8px;" v-if="select_menu_name === '1-1' && (globals.downloading.length || globals.pending_download.length)">
-        <Button size="small" type="error" ghost @click="cancelAll">全部取消</Button>
-      </div>
-      <!--下载相关-->
-      <v-download-process-item :items="globals.downloading" :itype="1" :istatus="2"
-                               v-show="select_menu_name === '1-1'"></v-download-process-item>
-      <v-download-process-item :items="globals.pending_download" :itype="1" :istatus="1"
-                               v-show="select_menu_name === '1-1'"></v-download-process-item>
-      <v-finished :items="globals.downloaded" :itype="1" v-if="select_menu_name === '1-2'"></v-finished>
+  <section class="route-download">
+    <header class="mv-header">
+      <div class="h-item" :class="{focus: tabIndex === 0}" @click="tabIndex = 0"><span>下载列表</span></div>
+      <div class="h-item" :class="{focus: tabIndex === 1}" @click="tabIndex = 1"><span>上传列表</span></div>
+      <div class="h-item" :class="{focus: tabIndex === 2}" @click="tabIndex = 2"><span>离线下载</span></div>
+    </header>
 
-      <!--上传相关-->
-      <v-download-process-item :items="globals.uploading" :itype="2" :istatus="2"
-                               v-show="select_menu_name === '2-1'"></v-download-process-item>
-      <v-download-process-item :items="globals.pending_upload" :itype="2" :istatus="1"
-                               v-show="select_menu_name === '2-1'"></v-download-process-item>
-      <v-finished :items="globals.uploaded" :itype="2" v-if="select_menu_name === '2-2'"></v-finished>
+    <div class="panel panel-download" v-show="tabIndex === 0">
+      <div class="row-cancel" v-if="globals.downloading.length || globals.pending_download.length">
+        <button class="mv-btn btn-danger" type="button" @click="cancelAllDownload">全部取消</button>
+      </div>
+      <!--正在下载-->
+      <div class="items-list">
+        <div class="item item-ing" v-for="item of globals.downloading">
+          <div class="i-name">{{item.name}}【{{item.total_size}}】</div>
+          <div class="i-progress">
+            <mt-progress :value="item.percent"></mt-progress>
+          </div>
+          <div class="i-info">
+            <div class="ii-cell"><span>速度</span><span>{{item.speed}}/s</span></div>
+            <div class="ii-cell"><span>已经下载</span><span>{{item.download_size}}</span></div>
+            <div class="ii-cell"><span>已用时间</span><span>{{item.time_used}}</span></div>
+            <div class="ii-cell"><span>预计还需</span><span>{{item.time_left}}</span></div>
+          </div>
+          <div class="i-actions">
+            <button class="mv-btn" type="button" @click="switchDownloadStatus(item)">{{item.is_pause ? '继续下载' : '暂停'}}</button>
+            <button class="mv-btn" type="button" @click="cancelTask(item)">取消</button>
+          </div>
+        </div>
+      </div>
+      <!--等待下载-->
+      <div class="items-list">
+        <div class="item item-ing" v-for="item of globals.pending_download">
+          <div class="i-name">{{item.name}}【等待下载...】</div>
+          <div class="i-info">
+            <div class="ii-cell"><span>速度</span><span>{{item.speed}}/s</span></div>
+            <div class="ii-cell"><span>已经下载</span><span>{{item.download_size}}</span></div>
+            <div class="ii-cell"><span>已用时间</span><span>{{item.time_used}}</span></div>
+            <div class="ii-cell"><span>预计还需</span><span>{{item.time_left}}</span></div>
+          </div>
+        </div>
+      </div>
+      <!--已完成-->
+      <div class="items-list">
+        <div class="item item-done" v-for="item of globals.downloaded">
+          <div class="i-name">{{item.name}}【{{item.total_size}}】</div>
+          <div class="i-info">
+            <div class="ii-cell"><span>平均速度</span><span>{{item.avg_speed}}/s</span></div>
+            <div class="ii-cell"><span>已用时间</span><span>{{item.time_used}}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <div v-show="select_menu_name === '3-1'">
-        <Card :bordered="false" style="margin-top: 16px">
-          <Row>
-            <Col span="6">任务名</Col>
-            <Col span="2">大小</Col>
-            <Col span="7">进度</Col>
-            <Col span="3">任务状态</Col>
-            <Col span="4">开始时间</Col>
-            <Col span="2">操作</Col>
-          </Row>
-        </Card>
-        <Card :bordered="false" style="margin-top: 2px" v-for="item in offline_downloading">
-          <Row>
-            <Col :title="item.taskname" span="6" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-              {{item.taskname}}
-            </Col>
-            <Col span="2">{{item.file_size}}</Col>
-            <Col span="7">
-              <Progress :percent="item.percent" status="active"/>
-            </Col>
-            <Col span="3">{{item.status_text}}</Col>
-            <Col span="4">{{item.stime}}</Col>
-            <Col span="2">
-              <Button icon="md-close" type="error" size="small" ghost @click="deleteTask(item)"></Button>
-            </Col>
-          </Row>
-        </Card>
+    <div class="panel panel-upload" v-show="tabIndex === 1">
+      <div class="row-cancel" v-if="globals.uploading.length || globals.pending_upload.length">
+        <button class="mv-btn btn-danger" type="button" @click="cancelAllUpload">全部取消</button>
       </div>
-      <div v-show="select_menu_name === '3-2'">
-        <Card :bordered="false" style="margin-top: 16px">
-          <Row>
-            <Col span="6">任务名</Col>
-            <Col span="2">任务状态</Col>
-            <Col span="2">大小</Col>
-            <Col span="8">路径</Col>
-            <Col span="4">完成时间</Col>
-            <Col span="2">操作</Col>
-          </Row>
-        </Card>
-        <Card :bordered="false" style="margin-top: 2px" v-for="item in offline_downloaded">
-          <Row>
-            <Col :title="item.taskname" span="6" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-              {{item.taskname}}
-            </Col>
-            <Col span="2">{{item.status_text}}</Col>
-            <Col span="2">{{item.file_size}}</Col>
-            <Col :title="item.path" span="8" style="overflow: hidden;white-space: nowrap;">{{item.path}}</Col>
-            <Col span="4">{{item.ftime}}</Col>
-            <Col span="2">
-              <Button icon="md-close" type="error" size="small" ghost @click="deleteTask(item)"></Button>
-            </Col>
-          </Row>
-        </Card>
+      <!--正在上传-->
+      <div class="items-list">
+        <div class="item item-ing" v-for="item of globals.uploading">
+          <div class="i-name">{{item.name}}【{{item.total_size}}】</div>
+          <div class="i-progress">
+            <mt-progress :value="item.percent"></mt-progress>
+          </div>
+          <div class="i-info">
+            <div class="ii-cell"><span>速度</span><span>{{item.speed}}/s</span></div>
+            <div class="ii-cell"><span>已经上传</span><span>{{item.download_size}}</span></div>
+            <div class="ii-cell"><span>已用时间</span><span>{{item.time_used}}</span></div>
+            <div class="ii-cell"><span>预计还需</span><span>{{item.time_left}}</span></div>
+          </div>
+        </div>
       </div>
-    </Layout>
-  </Layout>
+      <!--等待上传-->
+      <div class="items-list">
+        <div class="item item-ing" v-for="item of globals.pending_upload">
+          <div class="i-name">{{item.name}}【等待上传...】</div>
+          <div class="i-info">
+            <div class="ii-cell"><span>速度</span><span>{{item.speed}}/s</span></div>
+            <div class="ii-cell"><span>已经上传</span><span>{{item.download_size}}</span></div>
+            <div class="ii-cell"><span>已用时间</span><span>{{item.time_used}}</span></div>
+            <div class="ii-cell"><span>预计还需</span><span>{{item.time_left}}</span></div>
+          </div>
+        </div>
+      </div>
+      <!--已完成-->
+      <div class="items-list">
+        <div class="item item-done" v-for="item of globals.uploaded">
+          <div class="i-name">{{item.name}}【{{item.total_size}}】</div>
+          <div class="i-info">
+            <div class="ii-cell"><span>平均速度</span><span>{{item.avg_speed}}/s</span></div>
+            <div class="ii-cell"><span>已用时间</span><span>{{item.time_used}}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
-  import VDownloadProcessItem from "./DownloadProcessItem"
-  import VFinished from '../components/Finished'
   import config from '../config'
   import utils from '../libs/util'
   import {mapState, mapMutations} from 'vuex'
+  import {Toast, Indicator, MessageBox} from 'mint-ui'
 
   export default {
     name: 'v-download',
     data() {
       return {
+        tabIndex: 0,
         select_menu_name: "1-1",
         base_url: config.base_url,
         ws_url: config.ws_url,
@@ -117,11 +120,25 @@
     computed: {
       ...mapState(['globals', 'websocket'])
     },
-    components: { VDownloadProcessItem, VFinished },
     methods: {
       ...mapMutations(['initWS']),
       initWebSocket() {
         if (this.websocket === null) this.initWS()
+      },
+      async switchDownloadStatus(item) {
+        Indicator.open()
+        const method = item.is_pause ? 'resume' : 'pause'
+        const result = await $axios.get(`download?method=${method}&id=${item.LastID}`).catch(this.error)
+        Indicator.close()
+        Toast(result.data.code === 0 ? '操作成功' : result.data.msg)
+      },
+      cancelTask(item) {
+        MessageBox.confirm('删除任务后无法恢复, 确定吗?').then(async () => {
+          Indicator.open()
+          const result = await $axios.get(`download?method=cancel&id=${item.LastID}`).catch(this.error)
+          Indicator.close()
+          Toast(result.data.code === 0 ? '操作成功' : result.data.msg)
+        }).catch(() => {})
       },
       getMenuName(name) {
         this.select_menu_name = name
@@ -196,23 +213,41 @@
           })
         }
       },
-      cancelAll() {
-        this.$Modal.confirm({
-          title: '删除任务后无法恢复, 确定吗?',
-          onOk: async () => {
-            const ids = [
-              ...this.globals.downloading.map(item => item.LastID),
-              ...this.globals.pending_download.map(item => item.LastID)
-            ]
-            let body
-            for (let i = 0; i < ids.length; i++) {
-              do {
-                await utils.sleep()
-                body = await $axios.get(`download?method=cancel&id=${ids[i]}`).catch(this.error)
-              } while (body.data.code !== 0)
+      cancelAllDownload() {
+        MessageBox.confirm('删除任务后无法恢复, 确定吗?').then(async () => {
+          Indicator.open()
+          const ids = [
+            ...this.globals.downloading.map(item => item.LastID),
+            ...this.globals.pending_download.map(item => item.LastID)
+          ]
+          let body
+          for (let i = 0; i < ids.length; i++) {
+            do {
               await utils.sleep()
-            }
+              body = await $axios.get(`download?method=cancel&id=${ids[i]}`).catch(this.error)
+            } while (body.data.code !== 0)
+            await utils.sleep()
           }
+          Indicator.close()
+        }).catch(() => {})
+      },
+      cancelAllUpload() {
+        MessageBox.confirm('删除任务后无法恢复, 确定吗?').then(async () => {
+          Indicator.open()
+          const ids = [
+            ...this.globals.uploading.map(item => item.LastID),
+            ...this.globals.pending_upload.map(item => item.LastID)
+          ]
+          let body
+          for (let i = 0; i < ids.length; i++) {
+            do {
+              await utils.sleep()
+              body = await $axios.get(`upload?method=cancel&id=${ids[i]}`).catch(this.error)
+            } while (body.data.code !== 0)
+            await utils.sleep()
+          }
+          Indicator.close()
+        }).catch(() => {
         })
       }
     },
