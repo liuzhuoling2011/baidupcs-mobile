@@ -12,6 +12,9 @@
     <div class="t-item">
       <router-link to="/recycle">回收站</router-link>
     </div>
+    <div class="t-item">
+      <router-link to="/user">我的</router-link>
+    </div>
   </div>
   <!--<Layout>
     <Header>

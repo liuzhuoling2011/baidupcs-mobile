@@ -1,5 +1,5 @@
-@import "Variables";
 @import (reference) "Mixins";
+@import "CssVariables";
 @import "Normalize";
 @import "Components";
 @import "Pages/Lock";
@@ -7,6 +7,7 @@
 @import "Pages/Share";
 @import "Pages/Recycle";
 @import "Pages/Download";
+@import "Pages/User";
 
 html, body, #app {
   height: 100%;
@@ -18,6 +19,6 @@ html, body, #app {
 
 .no-data {
   text-align: center;
-  color: @assist-font-color;
+  color: var(--second-color);
   margin-top: 20vh;
 }

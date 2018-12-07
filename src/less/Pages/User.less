@@ -1,0 +1,94 @@
+@import (reference) "../Mixins";
+
+.route-user {
+  padding: var(--2unit);
+
+  .user-data {
+    .flex-start;
+
+    .i-avatar {
+      margin-right: var(--unit);
+    }
+
+    .i-info {
+      .i-name {
+        .flex-start;
+        margin-bottom: 4px;
+
+        .n-name {
+          margin-right: var(--unit);
+          font-size: var(--big-font);
+
+        }
+
+        .n-sex {
+          color: var(--success-color);
+        }
+      }
+    }
+  }
+
+  .banner {
+    height: var(--5unit);
+    background-color: #ffe9a7;
+    border-radius: var(--border-radius);
+    margin-top: var(--3unit);
+  }
+
+  .route-lists {
+    display: flex;
+    flex-wrap: wrap;
+
+    .item {
+      width: 25%;
+
+      .icon {
+        margin-bottom: var(--unit);
+
+        &.icon-delete {
+          color: var(--error-color);
+        }
+
+        &.icon-setting {
+          color: var(--success-color);
+        }
+
+        &.icon-refresh {
+          color: var(--warn-color);
+        }
+
+        &.icon-link {
+          color: var(--pink-color);
+        }
+      }
+
+      span {
+        font-size: var(--small-font);
+      }
+    }
+
+    .item-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--2unit);
+    }
+
+    .item-direct {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--2unit);
+    }
+  }
+
+  .mv-row {
+    font-size: var(--small-font);
+
+    &.row-exit {
+      span {
+        color: var(--error-color);
+      }
+    }
+  }
+}

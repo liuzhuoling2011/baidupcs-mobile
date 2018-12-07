@@ -40,6 +40,14 @@ const router = new Router({
       path: '/recycle',
       component: () => import(/* webpackChunkName: "recycle" */ './views/Recycle'),
       meta: { auth: true }
+    },
+    {
+      path: '/user',
+      components: {
+        default: () => import(/* webpackChunkName: "user" */ './views/User'),
+        nav: Nav
+      },
+      meta: { auth: true }
     }
   ]
 })

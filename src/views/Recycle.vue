@@ -2,7 +2,7 @@
   <section class="route-recycle">
     <header class="mv-header">
       <div class="header-l">
-        <router-link to="/"><v-icon icon="left"></v-icon></router-link>
+        <v-icon icon="left" @click.native="$router.go(-1)"></v-icon>
       </div>
       <div class="header-m">回收站</div>
       <div class="header-r">

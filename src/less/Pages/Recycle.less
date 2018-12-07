@@ -1,25 +1,24 @@
-@import "../Variables";
 @import (reference) "../Mixins";
 
 .route-recycle {
   padding-top: 40px;
 
   .mv-row {
-    padding: @unit;
+    padding: var(--unit);
 
     .cell {
       &.m {
         .file-name {
-          font-size: @small-font;
+          font-size: var(--small-font);
         }
 
         .file-info {
           margin-top: 4px;
-          font-size: @small-font;
-          color: @assist-font-color;
+          font-size: var(--small-font);
+          color: var(--second-color);
 
           .file-left {
-            margin-left: @3unit;
+            margin-left: var(--3unit);
           }
         }
       }
@@ -27,20 +26,20 @@
       &.r {
         .flex-start;
         height: 42px;
-        padding: 0 @2unit;
+        padding: 0 var(--2unit);
       }
     }
   }
 
   .mv-tab-actions {
-    background-color: @blue-color;
+    background-color: var(--blue-color);
     z-index: 2;
 
     .t-item {
       line-height: 50px;
-      font-size: @small-font;
+      font-size: var(--small-font);
       text-align: center;
-      color: @white-color;
+      color: var(--white);
     }
   }
 }

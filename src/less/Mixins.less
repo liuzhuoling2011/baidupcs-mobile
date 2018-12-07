@@ -1,5 +1,3 @@
-@import "Variables";
-
 .hvcenter {
   display: flex;
   align-items: center;
@@ -62,16 +60,16 @@
 .mixin-table(@line-height: 40px; @bordered: false; @striped: false) {
   width: 100%;
   text-align: left;
-  font-size: @small-font;
-  border: 1px solid @border-color;
+  font-size: var(--small-font);
+  border: 1px solid var(--border-color);
 
   caption {
     margin-bottom: 10px;
-    font-size: @normal-font;
+    font-size: var(--normal-font);
   }
 
   thead {
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid var(--border-color);
     background-color: #F5F6FA;
 
     tr {
@@ -79,11 +77,11 @@
       th {
         padding: 0 15px;
         font-weight: normal;
-        color: @assist-font-color;
+        color: var(--second-color);
         white-space: nowrap;
 
         & when (@bordered = true) {
-          border-right: 1px solid @border-color;
+          border-right: 1px solid var(--border-color);
 
           &:last-child {
             border-right: none;
@@ -95,21 +93,21 @@
   tbody {
     & when (@striped = true) {
       tr:nth-child(odd) {
-        background-color: @bg-color;
+        background-color: var(--bg-color);
       }
     }
 
     tr {
       height: @line-height;
       transition: background-color .25s ease;
-      border-bottom: 1px solid @border-color;
+      border-bottom: 1px solid var(--border-color);
 
       &:last-child {
         border-bottom: none;
       }
 
       &:hover {
-        background-color: @bg-color;
+        background-color: var(--bg-color);
       }
 
       &.row-loading {
@@ -121,7 +119,7 @@
         white-space: nowrap;
 
         & when (@bordered = true) {
-          border-right: 1px solid @border-color;
+          border-right: 1px solid var(--border-color);
 
           &:last-child {
             border-right: none;
@@ -130,16 +128,16 @@
 
         &.no-data-info {
           text-align: center;
-          color: @assist-font-color;
+          color: var(--second-color);
         }
       }
     }
 
     .btn-text {
-      color: @blue-color;
+      color: var(--blue-color);
 
       &:hover {
-        color: @hover-blue-color;
+        color: var(--hover-blue);
       }
     }
   }
@@ -153,7 +151,7 @@
 
 .mixin-base-button {
   display: inline-block;
-  font-size: @small-font;
+  font-size: var(--small-font);
   text-align: center;
   padding: 0 12px;
   height: 30px;
@@ -161,42 +159,42 @@
   min-width: 72px;
   background-color: transparent;
   border: 1px solid transparent;
-  border-radius: @border-radius-small;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all .3s;
 }
 
 .mixin-button-solid {
-  background-color: @blue-color;
-  color: @white-color;
+  background-color: var(--blue-color);
+  color: var(--white);
 
   &:hover {
-    background-color: @hover-blue-color;
+    background-color: var(--hover-blue);
   }
 
   &:active {
-    background-color: @active-blue-color;
+    background-color: var(--active-blue);
   }
 }
 
 .mixin-button-ghost {
-  border-color: @blue-color;
+  border-color: var(--blue-color);
   line-height: 28px;
-  color: @blue-color;
+  color: var(--blue-color);
 
   &:hover {
-    border-color: @hover-blue-color;
-    color: @hover-blue-color;
+    border-color: var(--hover-blue);
+    color: var(--hover-blue);
   }
   &:active {
-    border-color: @active-blue-color;
-    color: @active-blue-color;
+    border-color: var(--active-blue);
+    color: var(--active-blue);
   }
 }
 
 .mixin-content-width {
   width: 60vw;
-  min-width: @min-width;
+  min-width: var(--min-width);
   margin: 0 auto;
 }
 
@@ -236,7 +234,7 @@
 }
 
 .mixin-bg-body {
-  background-color: @bg-color;
+  background-color: var(--bg-color);
   min-height: 100vh;
   margin-bottom: 0;
 }
@@ -255,18 +253,18 @@
     left: 0;
     right: 0;
     height: 1px;
-    color: @light-border-color;
+    color: var(--border-color);
     transform-origin: 0 0;
     transform: scaleY(0.5);
 
     & when (@direction = 'top') {
       top: 0;
-      border-top: 1px solid @light-border-color;
+      border-top: 1px solid var(--border-color);
     }
 
     & when (@direction = 'bottom') {
       bottom: 0;
-      border-bottom: 1px solid @light-border-color;
+      border-bottom: 1px solid var(--border-color);
     }
   }
 }

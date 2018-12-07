@@ -1,13 +1,12 @@
-@import "../Variables";
 @import (reference) "../Mixins";
 
 .route-share {
   .mv-row {
-    padding: @unit;
+    padding: var(--unit);
 
     .cell {
       &.m {
-        font-size: @small-font;
+        font-size: var(--small-font);
 
         .file-name {
           .flex-start;
@@ -18,7 +17,7 @@
         }
 
         .file-url {
-          color: @assist-font-color;
+          color: var(--second-color);
           margin-top: 4px;
         }
       }
@@ -28,7 +27,7 @@
         line-height: 40px;
 
         .icon {
-          color: @error-color;
+          color: var(--error-color);
         }
       }
     }

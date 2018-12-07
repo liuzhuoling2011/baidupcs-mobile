@@ -1,4 +1,3 @@
-@import "../Variables";
 @import (reference) "../Mixins";
 
 .route-home {
@@ -8,7 +7,7 @@
     .mv-header {
       .header-left {
         .home-header-left {
-          padding-left: @3unit;
+          padding-left: var(--3unit);
         }
 
         .non-home-header-left {
@@ -49,11 +48,11 @@
 
       .header-right {
         .icon {
-          color: @first-level-color;
+          color: var(--main-color);
         }
 
         .icon-more-h {
-          margin-left: @2unit;
+          margin-left: var(--2unit);
         }
       }
     }
@@ -62,17 +61,17 @@
       .mv-row {
         .cell {
           &.l {
-            margin-right: @2unit;
+            margin-right: var(--2unit);
           }
 
           &.m {
-            font-size: @small-font;
+            font-size: var(--small-font);
           }
 
           &.r {
             .flex-start;
             height: 46px;
-            padding: 0 @2unit;
+            padding: 0 var(--2unit);
           }
         }
       }
@@ -80,17 +79,17 @@
   }
 
   .mv-tab-actions {
-    background-color: @blue-color;
+    background-color: var(--blue-color);
     z-index: 2;
 
     .t-item {
       line-height: 50px;
-      font-size: @small-font;
+      font-size: var(--small-font);
       text-align: center;
-      color: @white-color;
+      color: var(--white);
 
       &.disabled {
-        color: @disabled-color;
+        color: var(--disabled-color);
       }
     }
   }
