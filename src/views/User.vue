@@ -32,7 +32,7 @@
 
     <div class="mv-row"><span>简介</span></div>
     <div class="mv-row"><span>设置锁定密码</span></div>
-    <div class="mv-row"><span>检查更新</span></div>
+    <div class="mv-row"><span @click="checkUpdate">检查更新</span></div>
     <div class="mv-row"><span>帮助与反馈</span></div>
     <div class="mv-row row-exit"><span @click="logout">退出</span></div>
   </div>
@@ -59,6 +59,17 @@
           this.quota = JSON.parse(quota.data.data)
         }
       },
+      async checkUpdate() {
+        const body = await $axios.get('setting?method=update').catch(this.error)
+        if (body.data.code === 0) {
+          this.updateVersion = JSON.parse(body.data.data).data.filename
+          if (this.updateVersion.length > 1) {
+            MessageBox('提示', '有新版本更新，请在电脑上下载新版本！')
+          } else {
+            MessageBox('提示', '您目前使用的版本是最新的, 无需更新！')
+          }
+        }
+      },
       logout() {
         MessageBox.confirm('退出登录?').then(async () => {
           Indicator.open()
@@ -67,7 +78,7 @@
           location.reload()
         }).catch(() => {
         })
-      },
+      }
     },
     created() {
       this.getQuota()
