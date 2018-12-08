@@ -140,12 +140,6 @@
           Toast(result.data.code === 0 ? '操作成功' : result.data.msg)
         }).catch(() => {})
       },
-      getMenuName(name) {
-        this.select_menu_name = name
-        if (name === '3-1' || name === '3-2') {
-          this.getOfflineTask()
-        }
-      },
       async deleteTask(item) {
         let method = 'delete'
         if (item.status !== 0) method = 'cancel'

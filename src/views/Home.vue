@@ -26,7 +26,7 @@
       <header class="mv-header">
         <div class="header-left">
           <div class="home-header-left" v-show="isHome">
-            <mt-search v-model="keywords" placeholder="搜索网盘文件"></mt-search>
+            <mt-search v-model="keywords" placeholder="搜索网盘文件(待开发)"></mt-search>
           </div>
           <div class="non-home-header-left" v-show="!isHome" @click="back">
             <v-icon icon="left"></v-icon>

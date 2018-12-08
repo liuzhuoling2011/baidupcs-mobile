@@ -39,13 +39,13 @@
           <v-icon icon="delete"></v-icon><span>回收站</span>
         </router-link>
       </div>
-      <div class="item item-direct">
+      <div class="item item-direct" @click="notDev">
         <v-icon icon="setting"></v-icon><span>设置</span>
       </div>
       <div class="item item-direct">
         <v-icon icon="refresh"></v-icon><span>切换账号</span>
       </div>
-      <div class="item item-direct">
+      <div class="item item-direct" @click="notDev">
         <v-icon icon="link"></v-icon><span>离线下载</span>
       </div>
     </div>
@@ -53,13 +53,13 @@
     <div class="mv-row"><span @click="showIntro">简介</span></div>
     <div class="mv-row"><span @click="showSetLock">设置锁定密码</span></div>
     <div class="mv-row"><span @click="checkUpdate">检查更新</span></div>
-    <div class="mv-row"><span>帮助与反馈</span></div>
+    <div class="mv-row"><span @click="notDev">帮助与反馈</span></div>
     <div class="mv-row row-exit"><span @click="logout">退出</span></div>
   </div>
 </template>
 
 <script>
-  import {mapState, mapMutations} from 'vuex'
+  import {mapState} from 'vuex'
   import {Toast, Indicator, MessageBox} from 'mint-ui'
 
   export default {
@@ -130,6 +130,9 @@
           location.reload()
         }).catch(() => {
         })
+      },
+      notDev() {
+        Toast('待开发')
       }
     },
     created() {
