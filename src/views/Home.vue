@@ -13,7 +13,14 @@
       </div>
     </mv-page>
 
-
+    <div class="mv-drop-down" v-show="isShowDropDown">
+      <div class="dd-item" @click="fileSort('name', 'asc')"><span>名称 - 升序</span></div>
+      <div class="dd-item" @click="fileSort('name', 'desc')"><span>名称 - 降序</span></div>
+      <div class="dd-item" @click="fileSort('size', 'asc')"><span>大小 - 升序</span></div>
+      <div class="dd-item" @click="fileSort('size', 'desc')"><span>大小 - 降序</span></div>
+      <div class="dd-item" @click="fileSort('time', 'asc')"><span>时间 - 升序</span></div>
+      <div class="dd-item" @click="fileSort('time', 'desc')"><span>时间 - 降序</span></div>
+    </div>
 
     <div class="home-page-1">
       <header class="mv-header">
@@ -29,7 +36,7 @@
 
         <div class="header-right">
           <v-icon icon="plus" @click.native="isShowPlus = true"></v-icon>
-          <v-icon icon="more-h"></v-icon>
+          <v-icon icon="more-h" @click.native="isShowDropDown = !isShowDropDown"></v-icon>
         </div>
       </header>
 
@@ -95,7 +102,8 @@
         currentFolder: {},
         selected: [],
         isSelectAll: false,
-        isShowPlus: false
+        isShowPlus: false,
+        isShowDropDown: false
       }
     },
     computed: {
@@ -328,6 +336,12 @@
           this.isShowPlus = false
         }).catch(() => {
         })
+      },
+      async fileSort(orderBy, order) {
+        Indicator.open()
+        await this.getPathData(this.currentFolder.path || '/', this.setCurrentFolder, false, orderBy, order)
+        Indicator.close()
+        this.isShowDropDown = false
       }
     },
     mounted() {

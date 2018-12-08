@@ -138,4 +138,21 @@
       }
     }
   }
+
+  .mv-drop-down {
+    .shadow-light;
+    position: absolute;
+    right: var(--unit);
+    top: 42px;
+    z-index: 20;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+
+    .dd-item {
+      .mixin-half-px(@direction: 'bottom');
+      padding: var(--unit) var(--2unit);
+      text-align: center;
+      font-size: var(--small-font);
+    }
+  }
 }
