@@ -112,3 +112,41 @@
     }
   }
 }
+
+.mv-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  padding-top: 40px;
+  z-index: 10;
+  background-color: var(--white);
+
+  .p-head {
+    .mixin-half-px(@direction: 'bottom');
+    .flex-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 40px;
+    padding: 0 var(--unit);
+  }
+
+  .p-body {
+    padding: var(--unit);
+  }
+}
+
+.mv-field {
+  .mixin-half-px(@direction: 'bottom');
+  height: 48px;
+  padding: 10px 0;
+
+  .input {
+    border: none;
+    width: 100%;
+    height: 28px;
+  }
+}

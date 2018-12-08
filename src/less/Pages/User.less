@@ -65,6 +65,10 @@
       span {
         font-size: var(--small-font);
       }
+
+      @media (max-width: 400px) {
+        width: 33%;
+      }
     }
 
     .item-link {
@@ -89,6 +93,28 @@
       span {
         color: var(--error-color);
       }
+    }
+  }
+
+  .page-intro {
+    p {
+      display: flex;
+      text-indent: 0;
+
+      .icon {
+        margin-right: var(--unit);
+      }
+    }
+
+    a {
+      color: #57a3f3;
+    }
+  }
+
+  .page-set-lock {
+    .btn-wide {
+      margin-top: var(--3unit);
+      width: 100%;
     }
   }
 }

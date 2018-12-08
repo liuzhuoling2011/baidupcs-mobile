@@ -1,5 +1,25 @@
 <template>
   <div class="route-user">
+    <mv-page class="page-intro" v-model="isShowIntro">
+      <h3>BaiduPCS-Go Web版本</h3>
+      <p><v-icon icon="email"></v-icon> liuzhuoling2011@hotmail.com</p>
+      <p><v-icon icon="github"></v-icon> <a href="https://github.com/liuzhuoling2011/baidupcs-web" target="_blank">https://github.com/liuzhuoling2011/baidupcs-web</a>
+      </p>
+      <p>感谢 iikira 提供了高速, 稳定可靠的百度云后台服务</p>
+      <p><v-icon icon="github"></v-icon> <a href="https://github.com/iikira/BaiduPCS-Go" target="_blank">https://github.com/iikira/BaiduPCS-Go</a></p>
+    </mv-page>
+
+    <mv-page class="page-set-lock" v-model="isShowSetLock">
+      <div class="mv-field">
+        <input class="input" type="password" placeholder="原锁定密码(第一次设置可不填)" v-model="oldLockPwd">
+      </div>
+      <div class="mv-field">
+        <input class="input" type="password" placeholder="新锁定密码" v-model="newLockPwd">
+      </div>
+
+      <button class="mv-btn btn-wide" type="button" @click="setLockPwd">确定</button>
+    </mv-page>
+
     <div class="user-data">
       <div class="i-avatar"></div>
       <div class="i-info">
@@ -30,8 +50,8 @@
       </div>
     </div>
 
-    <div class="mv-row"><span>简介</span></div>
-    <div class="mv-row"><span>设置锁定密码</span></div>
+    <div class="mv-row"><span @click="showIntro">简介</span></div>
+    <div class="mv-row"><span @click="showSetLock">设置锁定密码</span></div>
     <div class="mv-row"><span @click="checkUpdate">检查更新</span></div>
     <div class="mv-row"><span>帮助与反馈</span></div>
     <div class="mv-row row-exit"><span @click="logout">退出</span></div>
@@ -46,7 +66,11 @@
     name: 'User',
     data() {
       return {
-        quota: {}
+        quota: {},
+        isShowIntro: false,
+        isShowSetLock: false,
+        oldLockPwd: '',
+        newLockPwd: ''
       }
     },
     computed: {
@@ -68,6 +92,34 @@
           } else {
             MessageBox('提示', '您目前使用的版本是最新的, 无需更新！')
           }
+        }
+      },
+      showIntro() {
+        this.isShowIntro = true
+      },
+      showSetLock() {
+        this.oldLockPwd = ''
+        this.newLockPwd = ''
+        this.isShowSetLock = true
+      },
+      async setLockPwd() {
+        if (!this.newLockPwd) {
+          Toast({
+            message: '密码不能为空',
+            position: 'top',
+            duration: 1000
+          })
+          return
+        }
+
+        const body = await $axios.get(`password?method=set&oldpass=${this.oldLockPwd}&password=${this.newLockPwd}`).catch(this.error)
+        if (body.data.code === 0) {
+          Toast('设置成功')
+          localStorage.lastUnlockTime = new Date().getTime()
+        }
+
+        if (body.data.code === -3) {
+          Toast(body.data.msg)
         }
       },
       logout() {

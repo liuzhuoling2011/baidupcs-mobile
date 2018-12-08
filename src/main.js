@@ -11,11 +11,13 @@ import config from './config'
 import {Toast} from 'mint-ui'
 
 import Icon from './components/Icon.vue'
+import Page from './components/Page.vue'
 
 Vue.use(Mint)
 Vue.config.productionTip = false
 
 Vue.component(Icon.name, Icon)
+Vue.component(Page.name, Page)
 
 window.$axios = axios.create({
   baseURL: `${config.base_url}/api/v1/`
