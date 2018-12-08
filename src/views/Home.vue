@@ -1,5 +1,20 @@
 <template>
   <section class="route-home">
+    <mv-page v-model="isShowPlus">
+      <div class="pallet-buttons">
+        <div class="pb-item" @click="newFolder">
+          <div class="icon-wrap is-folder"><v-icon icon="folder-flat"></v-icon></div>
+          <span>新建文件夹</span>
+        </div>
+        <div class="pb-item">
+          <div class="icon-wrap is-file"><v-icon icon="file"></v-icon></div>
+          <span>上传文档</span>
+        </div>
+      </div>
+    </mv-page>
+
+
+
     <div class="home-page-1">
       <header class="mv-header">
         <div class="header-left">
@@ -13,7 +28,7 @@
         </div>
 
         <div class="header-right">
-          <v-icon icon="plus"></v-icon>
+          <v-icon icon="plus" @click.native="isShowPlus = true"></v-icon>
           <v-icon icon="more-h"></v-icon>
         </div>
       </header>
@@ -79,7 +94,8 @@
         folderStack: ['/'],
         currentFolder: {},
         selected: [],
-        isSelectAll: false
+        isSelectAll: false,
+        isShowPlus: false
       }
     },
     computed: {
@@ -287,6 +303,31 @@
           dir: path.replace(target.title, ''),
           path
         }
+      },
+      newFolder() {
+        MessageBox.prompt('请输入文件夹名称', {
+          showInput: true
+        }).then(async ({ value }) => {
+          Indicator.open()
+          const path = `${this.currentFolder.path || ''}/${value}`
+          const result = await $axios.get(`mkdir?path=${encodeURIComponent(path)}`).catch(this.error)
+          Indicator.close()
+          if (result.data.code !== 0) {
+            Toast(result.data.msg)
+          } else {
+            this.currentFolders.push({
+              children: [],
+              ctime: '刚刚',
+              isdir: true,
+              mtime: '刚刚',
+              path,
+              size: '0 B',
+              title: value
+            })
+          }
+          this.isShowPlus = false
+        }).catch(() => {
+        })
       }
     },
     mounted() {

@@ -93,4 +93,49 @@
       }
     }
   }
+
+  .pallet-buttons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    padding: var(--unit);
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10vh;
+
+    .pb-item {
+      width: 33%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .icon-wrap {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: var(--2unit);
+
+        .icon {
+          width: 25px;
+          height: 25px;
+        }
+
+        &.is-folder {
+          background-color: #fff3cf;
+        }
+
+        &.is-file {
+          background-color: #cfedf0;
+        }
+      }
+
+      > span {
+        font-size: var(--small-font);
+      }
+    }
+  }
 }
