@@ -48,7 +48,7 @@
       <div class="t-item" @click="downloadFiles"><span>下载</span></div>
       <div class="t-item" @click="shareFiles"><span>分享</span></div>
       <div class="t-item" @click="removeFiles"><span>删除</span></div>
-      <div class="t-item" :class="{disabled: selected.length > 1}"><span>重命名</span></div>
+      <div class="t-item" :class="{disabled: selected.length > 1}" @click="renameFile"><span>重命名</span></div>
       <div class="t-item"><span>更多</span></div>
     </div>
   </section>
@@ -176,6 +176,7 @@
         Indicator.open()
         await this.getPathData(item.path, this.setCurrentFolder)
         Indicator.close()
+        this.selected = []
         this.currentFolder = item
         this.folderStack.push(item)
       },
@@ -193,6 +194,7 @@
           await this.getPathData(toFolder.path, this.setCurrentFolder)
           this.currentFolder = toFolder
         }
+        this.selected = []
         Indicator.close()
       },
       cancelSelect() {
@@ -249,6 +251,43 @@
           }
         }).catch(() => {})
       },
+      renameFile() {
+        if (this.selected.length > 1) return
+
+        const parsed = this.parsePath(this.selected[0])
+        MessageBox.prompt('请输入新的名称', {
+          showInput: true,
+          inputValue: parsed.name
+        }).then(async ({value}) => {
+          Indicator.open()
+          const newPath = `${parsed.dir}/${value}`
+          const param = `${parsed.path}|${newPath}`
+          const result = await $axios.get(`file_operation?method=move&paths=${encodeURIComponent(param)}`).catch(this.error)
+          Indicator.close()
+          if (result.data.code !== 0) {
+            Toast(result.data.msg)
+          } else {
+            this.currentFolders.forEach(item => {
+              if (item.path === parsed.path) {
+                item.title = value
+                item.path = newPath
+              }
+            })
+          }
+        }).catch(() => {})
+      },
+      parsePath(path) {
+        const target = this.currentFolders.find(item => item.path === path)
+        let dir = '/'
+        if (this.folderStack.length > 1) {
+          dir = this.folderStack[this.folderStack.length - 1].path
+        }
+        return {
+          name: target.title,
+          dir: path.replace(target.title, ''),
+          path
+        }
+      }
     },
     mounted() {
       this.getFiles()
