@@ -1,7 +1,7 @@
 <template>
   <div class="route-login">
     <div class="logo"><img src="../assets/logo.png"></div>
-    <div class="login-form">
+    <div class="login-form" v-if="loginWay === 'pwd'">
       <div class="mv-row"><input class="input" v-model="username" placeholder="用户名"></div>
       <div class="mv-row"><input class="input" type="password" v-model="password" placeholder="密码"></div>
       <div class="mv-row row-verify" v-if="showVerify">
@@ -11,8 +11,25 @@
         <input class="input" v-model="verifyCode" placeholder="验证码">
         <img :src="loginVerifyData.verifyImg" v-if="showVerifyImg">
       </div>
+      <div class="row-ways">
+        <div class="way-other">
+          <a class="link" v-if="loginWay === 'pwd'" @click="loginWay = 'bduss'">BDUSS登录</a>
+        </div>
+      </div>
       <div class="row-submit">
         <button class="mv-btn" type="button" @click="login">登录</button>
+      </div>
+    </div>
+
+    <div class="login-form" v-if="loginWay === 'bduss'">
+      <div class="mv-row"><input class="input" v-model="BDUSS" placeholder="BDUSS"></div>
+      <div class="row-ways">
+        <div class="way-other">
+          <a class="link" v-if="loginWay === 'bduss'" @click="loginWay = 'pwd'">密码登录</a>
+        </div>
+      </div>
+      <div class="row-submit">
+        <button class="mv-btn" type="button" @click="loginWithBDUSS">登录</button>
       </div>
     </div>
 
@@ -42,7 +59,9 @@
         users: [],
         showVerify: false,
         showVerifyTypes: false,
-        showVerifyImg: false
+        showVerifyImg: false,
+        loginWay: 'pwd',
+        BDUSS: ''
       }
     },
     computed: {
@@ -83,6 +102,15 @@
       verifyType() {
         this.verifyCode = ''
         this.login()
+      },
+      async loginWithBDUSS() {
+        if (this.BDUSS === '') return
+
+        const body = await $axios.get(`user?method=login&bduss=${this.BDUSS}`).catch(this.error)
+        if (body === undefined) return
+        if (body.data.code === 0) {
+          location.href = '/dist'
+        }
       }
     },
     methods: {
