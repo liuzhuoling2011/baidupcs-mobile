@@ -1,0 +1,86 @@
+@import (reference) "../Mixins";
+
+.route-login {
+  padding-top: 10vh;
+
+  .logo {
+    text-align: center;
+    margin-bottom: var(--unit);
+
+    img {
+      width: 30vw;
+    }
+  }
+
+  .login-form {
+    padding: 0 var(--unit);
+
+    .mv-row {
+      margin-bottom: var(--unit);
+
+      .input {
+        border: none;
+        width: 100%;
+        height: 40px;
+        font-size: var(--normal-font);
+      }
+    }
+
+    .row-verify {
+      .select {
+        width: 50%;
+        height: 30px;
+        border-color: var(--border-color);
+        border-radius: var(--border-radius);
+      }
+
+      .input {
+        flex: 1;
+        width: auto;
+        margin-left: var(--unit);
+      }
+
+      img {
+        margin-left: var(--unit);
+      }
+    }
+
+    .row-submit {
+      margin-top: var(--3unit);
+
+      .mv-btn {
+        width: 100%;
+        background-color: var(--error-color);
+        border-radius: 20px;
+      }
+    }
+  }
+
+  .login-users {
+    padding: 0 var(--unit);
+
+    h4 {
+      text-align: center;
+      margin-bottom: var(--2unit);
+    }
+
+    .users-list {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .l-user {
+      font-size: var(--small-font);
+      padding: 8px 16px;
+      border-radius: 18px;
+      margin-right: var(--unit);
+      background-color: var(--blue-color);
+      color: var(--white);
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

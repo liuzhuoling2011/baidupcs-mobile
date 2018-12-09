@@ -42,7 +42,7 @@
       <div class="item item-direct" @click="notDev">
         <v-icon icon="setting"></v-icon><span>设置</span>
       </div>
-      <div class="item item-direct">
+      <div class="item item-direct" @click="$router.push('/login')">
         <v-icon icon="refresh"></v-icon><span>切换账号</span>
       </div>
       <div class="item item-direct" @click="notDev">

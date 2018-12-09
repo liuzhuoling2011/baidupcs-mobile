@@ -16,16 +16,6 @@
       <router-link to="/user">我的</router-link>
     </div>
   </div>
-  <!--<Layout>
-    <Header>
-      <Menu mode="horizontal" theme="dark">
-          <Submenu name="4">
-            <MenuItem name="switch" @click.native="switchUser">切换账号</MenuItem>
-          </Submenu>
-        </div>
-      </Menu>
-    </Header>
-  </Layout>-->
 </template>
 
 <script>
@@ -106,9 +96,6 @@
         if (body.data.code === -3) {
           this.$Message.error(body.data.msg)
         }
-      },
-      switchUser() {
-        this.$router.push('/login')
       }
     },
     mounted() {

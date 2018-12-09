@@ -1,13 +1,25 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import config from './config'
+import {Toast} from 'mint-ui'
 
 Vue.use(Vuex)
 
 function receiveData(e, state) {
   const redata = JSON.parse(e.data)
   if (redata.code !== 0) {
+    state.loginVerifyStatus = -99
     Toast(redata.msg)
+  }
+
+  // 登录
+  if (redata.type === 1) {
+    state.loginVerifyStatus = redata.status
+
+    if (redata.status === 2) state.loginVerifyData.verifyTypes = JSON.parse(redata.data.replace(/\\/g, '/'))
+    if (redata.status === 6) state.loginVerifyData.verifyImg = redata.msg
+
+    return
   }
 
   let pos = 0
@@ -167,6 +179,8 @@ function receiveData(e, state) {
 
 export default new Vuex.Store({
   state: {
+    loginVerifyStatus: -1,
+    loginVerifyData: {},
     login: false,
     isLock: false,
     user: {},
