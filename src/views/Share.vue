@@ -69,6 +69,12 @@
           return true
         }
         Toast(result.data.msg)
+      },
+      copyLink(link) {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(link)
+          Toast('已复制')
+        }
       }
     },
     mounted() {

@@ -44,7 +44,7 @@
       <!--已完成-->
       <div class="items-list">
         <div class="item item-done" v-for="item of globals.downloaded">
-          <div class="i-name">{{item.name}}【{{item.total_size}}】</div>
+          <div class="i-name">{{item.name}}【已完成】</div>
           <div class="i-info">
             <div class="ii-cell"><span>平均速度</span><span>{{item.avg_speed}}/s</span></div>
             <div class="ii-cell"><span>已用时间</span><span>{{item.time_used}}</span></div>
