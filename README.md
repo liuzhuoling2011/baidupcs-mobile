@@ -5,7 +5,7 @@
 ### 开发
 1. 先启动BaiduPCS-Go后台服务
 2. 启动前端项目
-> npm install
+> npm install  
 > npm run serve
 
 
