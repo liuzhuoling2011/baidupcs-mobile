@@ -102,15 +102,6 @@
       verifyType() {
         this.verifyCode = ''
         this.login()
-      },
-      async loginWithBDUSS() {
-        if (this.BDUSS === '') return
-
-        const body = await $axios.get(`user?method=login&bduss=${this.BDUSS}`).catch(this.error)
-        if (body === undefined) return
-        if (body.data.code === 0) {
-          location.href = '/dist'
-        }
       }
     },
     methods: {
@@ -133,6 +124,15 @@
         if (this.verifyCode !== '') data.verify_code = this.verifyCode
 
         this.websocket.send(JSON.stringify(data))
+      },
+      async loginWithBDUSS() {
+        if (this.BDUSS === '') return
+
+        const body = await $axios.get(`login?bduss=${this.BDUSS}`).catch(this.error)
+        if (body === undefined) return
+        if (body.data.code === 0) {
+          location.href = '/dist'
+        }
       },
       async selectUser(user) {
         Indicator.open()

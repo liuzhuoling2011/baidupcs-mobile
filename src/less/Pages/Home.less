@@ -6,12 +6,19 @@
 
     .mv-header {
       .header-left {
+        max-width: calc(100% - 80px);
+
         .home-header-left {
           padding-left: var(--3unit);
         }
 
         .non-home-header-left {
           .flex-start;
+
+          span {
+            .truncate;
+            flex: 1;
+          }
         }
 
         .mint-search {
@@ -47,6 +54,8 @@
       }
 
       .header-right {
+        flex-shrink: 0;
+
         .icon {
           color: var(--main-color);
         }
@@ -66,6 +75,7 @@
 
           &.m {
             font-size: var(--small-font);
+            white-space: pre-wrap;
           }
 
           &.r {
