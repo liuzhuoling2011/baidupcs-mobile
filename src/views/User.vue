@@ -51,7 +51,7 @@
     </div>
 
     <div class="mv-row"><span @click="showIntro">简介</span></div>
-    <div class="mv-row"><span @click="showSetLock">设置锁定密码</span></div>
+    <!-- <div class="mv-row"><span @click="showSetLock">设置锁定密码</span></div> -->
     <div class="mv-row"><span @click="checkUpdate">检查更新</span></div>
     <div class="mv-row"><span @click="notDev">帮助与反馈</span></div>
     <div class="mv-row row-exit"><span @click="logout">退出</span></div>

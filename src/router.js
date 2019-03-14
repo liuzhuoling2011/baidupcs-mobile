@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Login from './views/Login'
 import Nav from './components/Nav'
-import Lock from './views/Lock.vue'
+// import Lock from './views/Lock.vue'
 import Share from './views/Share.vue'
 import store from './store'
 
@@ -20,7 +20,7 @@ const router = new Router({
       meta: { auth: true }
     },
     { path: '/login', component: Login },
-    { path: '/lock', component: Lock },
+    // { path: '/lock', component: Lock },
     { path: '/share', name: 'Share',
       components: {
         default: Share,
@@ -58,10 +58,10 @@ router.beforeEach((to, from, next) => {
       next('/login')
       return
     }
-    if (store.state.isLock) {
+    /*if (store.state.isLock) {
       next('/lock')
       return
-    }
+    }*/
   }
   next()
 })
